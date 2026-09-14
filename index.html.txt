@@ -3,45 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boutique Style Amazon - 100% Gratuit</title>
+  <title>MaCuisine - Produits de qualité à des prix imbattables</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-100 font-sans">
 
   <!-- En-tête principal Amazon -->
-  <header class="bg-[#131921] text-white text-sm sticky top-0 z-50">
+  <header class="bg-[#131921] text-white text-sm sticky top-0 z-50 shadow-md">
     <div class="max-w-7xl mx-auto flex items-center gap-4 px-4 py-2">
       <!-- Logo -->
-      <a href="#" class="text-xl font-bold tracking-wider hover:border border-white p-1 rounded">
-        MARCHÉ<span class="text-[#febd69]">.DZ</span>
+      <a href="#" class="text-xl font-black tracking-wide p-1 rounded hover:outline outline-1 outline-white">
+        Ma<span class="text-[#febd69]">Cuisine</span>
       </a>
 
       <!-- Barre de recherche centrale -->
-      <div class="flex flex-1 items-center h-10 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-[#f90]">
-        <select class="bg-gray-200 text-gray-800 text-xs px-2 h-full border-r border-gray-300 outline-none">
+      <div class="flex flex-1 items-center h-10 rounded-md overflow-hidden bg-white">
+        <select class="bg-gray-100 text-gray-700 text-xs px-2 h-full border-r border-gray-300 outline-none">
           <option>Tous nos rayons</option>
-          <option>Électronique</option>
-          <option>Maison & Cuisine</option>
-          <option>Alimentation</option>
+          <option>Appareils de cuisson</option>
+          <option>Batterie de cuisine</option>
+          <option>Accessoires</option>
         </select>
-        <input type="text" id="searchInput" placeholder="Rechercher des articles..." class="w-full h-full px-3 text-black text-sm outline-none">
+        <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Rechercher des produits de qualité..." class="w-full h-full px-3 text-black text-sm outline-none">
         <button class="bg-[#febd69] hover:bg-[#f3a847] text-gray-900 px-5 h-full flex items-center justify-center">
           <i class="fa-solid fa-magnifying-glass text-lg"></i>
         </button>
       </div>
 
       <!-- Compte & Commandes -->
-      <div class="hover:border border-white p-1 rounded cursor-pointer leading-tight">
+      <div class="hover:outline outline-1 outline-white p-1 rounded cursor-pointer leading-tight hidden sm:block">
         <span class="text-xs text-gray-300">Bonjour, Identifiez-vous</span><br>
         <span class="font-bold text-xs">Compte et listes</span>
       </div>
 
       <!-- Panier -->
-      <div class="hover:border border-white p-2 rounded cursor-pointer flex items-center gap-2">
+      <div onclick="openCart()" class="hover:outline outline-1 outline-white p-2 rounded cursor-pointer flex items-center gap-2">
         <div class="relative">
           <i class="fa-solid fa-cart-shopping text-2xl text-white"></i>
-          <span id="cartCount" class="absolute -top-1 left-3 bg-[#febd69] text-gray-900 font-bold rounded-full text-xs px-1">0</span>
+          <span id="cartCount" class="absolute -top-1 left-3 bg-[#febd69] text-gray-900 font-extrabold rounded-full text-xs px-1.5">0</span>
         </div>
         <span class="font-bold text-xs hidden sm:inline mt-2">Panier</span>
       </div>
@@ -49,67 +49,154 @@
 
     <!-- Barre sous-navigation -->
     <nav class="bg-[#232f3e] text-white text-xs px-4 py-1.5 flex items-center gap-5 overflow-x-auto">
-      <span class="font-bold flex items-center gap-1 cursor-pointer"><i class="fa-solid fa-bars"></i> Toutes</span>
-      <a href="#" class="hover:underline">Meilleures ventes</a>
-      <a href="#" class="hover:underline">Nouveautés</a>
-      <a href="#" class="hover:underline">Promotions</a>
-      <a href="#" class="hover:underline">Service Client</a>
+      <span class="font-bold flex items-center gap-1 cursor-pointer"><i class="fa-solid fa-bars"></i> Tous les rayons</span>
+      <a href="#" class="hover:underline whitespace-nowrap">Meilleures ventes</a>
+      <a href="#" class="hover:underline whitespace-nowrap">Promotions chocs</a>
+      <a href="#" class="hover:underline whitespace-nowrap">Nouveautés</a>
+      <a href="#" class="hover:underline whitespace-nowrap">Service Client</a>
     </nav>
   </header>
 
-  <!-- Bannière principale -->
-  <section class="relative bg-gradient-to-b from-[#232f3e] to-gray-100 text-white py-12 px-6">
-    <div class="max-w-7xl mx-auto text-center md:text-left">
-      <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Des milliers d'articles au meilleur prix</h1>
-      <p class="text-gray-300 mb-4">Commandez en ligne et payez directement à la livraison en toute sécurité.</p>
+  <!-- Bannière principale MaCuisine -->
+  <section class="bg-gradient-to-r from-[#131921] via-[#232f3e] to-[#131921] text-white py-10 px-6 text-center border-b border-gray-700">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl sm:text-4xl font-black mb-2 text-[#febd69]">MaCuisine</h1>
+      <p class="text-lg sm:text-xl font-medium text-gray-200">Des produits de qualité à des prix imbattables !</p>
+      <p class="text-xs sm:text-sm text-gray-400 mt-1">Livraison rapide à domicile et paiement sécurisé à la réception.</p>
     </div>
   </section>
 
   <!-- Grille de Produits -->
-  <main class="max-w-7xl mx-auto -mt-6 px-4 pb-12">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="productGrid">
-      <!-- Les cartes produits s'affichent dynamiquement ici -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Nos meilleures offres cuisine</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5" id="productGrid">
+      <!-- Produits injectés par le script -->
     </div>
   </main>
 
+  <!-- Panneau Panier (Drawer) -->
+  <div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex justify-end">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
+      <div>
+        <div class="flex items-center justify-between border-b pb-3 mb-4">
+          <h2 class="text-lg font-bold text-gray-900">Mon Panier</h2>
+          <button onclick="closeCart()" class="text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+        </div>
+        <div id="cartItems" class="space-y-3">
+          <p class="text-sm text-gray-500">Votre panier est vide.</p>
+        </div>
+      </div>
+      <div class="border-t pt-4">
+        <div class="flex justify-between font-bold text-base mb-4">
+          <span>Total :</span>
+          <span id="cartTotal">0 DA</span>
+        </div>
+        <button onclick="checkout()" class="w-full bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 font-bold py-3 rounded-lg shadow text-sm">
+          Passer la commande (Paiement à la livraison)
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Catalogue d'exemple modifiable
     const products = [
-      { id: 1, name: "Écouteurs Sans Fil Bluetooth 5.3", price: 2500, rating: 4.5, reviews: 142, img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&q=80" },
-      { id: 2, name: "Montre Connectée Sport & Santé", price: 4800, rating: 4.8, reviews: 89, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" },
-      { id: 3, name: "Sac à Dos Imperméable USB", price: 3200, rating: 4.2, reviews: 56, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80" },
-      { id: 4, name: "Lampe LED de Bureau Tactile", price: 1900, rating: 4.6, reviews: 210, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&q=80" }
+      { id: 1, name: "Batterie de Cuisine Inox Antiadhésive (10 Pièces)", price: 8900, rating: 4.8, reviews: 215, img: "https://images.unsplash.com/photo-1584990347449-39bbf8703a95?w=500&q=80" },
+      { id: 2, name: "Friteuse Sans Huile Air Fryer XXL 5.5L", price: 11500, rating: 4.9, reviews: 340, img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=500&q=80" },
+      { id: 3, name: "Robot Pâtissier Multifonction 1200W", price: 14200, rating: 4.7, reviews: 98, img: "https://images.unsplash.com/photo-1578643463396-0997cb5328c1?w=500&q=80" },
+      { id: 4, name: "Set de 5 Couteaux de Chef Professionnels en Acier", price: 3400, rating: 4.6, reviews: 142, img: "https://images.unsplash.com/photo-1593618998160-e34014e67546?w=500&q=80" },
+      { id: 5, name: "Mixeur Plongeant 4 en 1 avec Hachoir & Fouet", price: 4200, rating: 4.5, reviews: 76, img: "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=500&q=80" },
+      { id: 6, name: "Balance de Cuisine Électronique Précision 1g/5kg", price: 1500, rating: 4.8, reviews: 189, img: "https://images.unsplash.com/photo-1585515320310-259814833e62?w=500&q=80" }
     ];
 
-    let cartCount = 0;
+    let cart = [];
 
-    function renderProducts() {
+    function renderProducts(items = products) {
       const container = document.getElementById('productGrid');
-      container.innerHTML = products.map(p => `
-        <div class="bg-white p-4 rounded shadow-sm hover:shadow-md transition flex flex-col justify-between border border-gray-200">
+      if (items.length === 0) {
+        container.innerHTML = `<p class="col-span-4 text-center text-gray-500 py-8">Aucun produit trouvé.</p>`;
+        return;
+      }
+      container.innerHTML = items.map(p => `
+        <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition flex flex-col justify-between border border-gray-200">
           <div>
             <div class="h-44 w-full mb-3 flex items-center justify-center overflow-hidden bg-gray-50 rounded">
-              <img src="${p.img}" alt="${p.name}" class="h-full object-contain">
+              <img src="${p.img}" alt="${p.name}" class="h-full object-cover">
             </div>
-            <h3 class="font-medium text-sm line-clamp-2 hover:text-[#007185] cursor-pointer">${p.name}</h3>
+            <h3 class="font-semibold text-sm line-clamp-2 hover:text-[#007185] cursor-pointer">${p.name}</h3>
             <div class="flex items-center gap-1 text-xs text-[#de7921] my-1">
               <span>★ ${p.rating}</span>
-              <span class="text-gray-500">(${p.reviews})</span>
+              <span class="text-gray-500">(${p.reviews} avis)</span>
             </div>
-            <div class="text-xl font-bold text-gray-900 mt-2">
+            <div class="text-xl font-black text-gray-900 mt-2">
               ${p.price.toLocaleString()} <span class="text-xs font-normal">DA</span>
             </div>
           </div>
-          <button onclick="addToCart()" class="mt-4 w-full bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 text-xs font-semibold py-2 px-3 rounded-full shadow-sm">
+          <button onclick="addToCart(${p.id})" class="mt-4 w-full bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 text-xs font-bold py-2.5 px-3 rounded-full shadow-sm active:scale-95 transition">
             Ajouter au panier
           </button>
         </div>
       `).join('');
     }
 
-    function addToCart() {
-      cartCount++;
-      document.getElementById('cartCount').innerText = cartCount;
+    function addToCart(id) {
+      const item = products.find(p => p.id === id);
+      cart.push(item);
+      updateCart();
+    }
+
+    function updateCart() {
+      document.getElementById('cartCount').innerText = cart.length;
+      const cartItems = document.getElementById('cartItems');
+      const cartTotal = document.getElementById('cartTotal');
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-sm text-gray-500">Votre panier est vide.</p>';
+        cartTotal.innerText = '0 DA';
+        return;
+      }
+
+      let total = 0;
+      cartItems.innerHTML = cart.map((p, index) => {
+        total += p.price;
+        return `
+          <div class="flex justify-between items-center text-sm border-b pb-2">
+            <div>
+              <p class="font-medium text-gray-800 line-clamp-1">${p.name}</p>
+              <p class="text-xs text-gray-500">${p.price.toLocaleString()} DA</p>
+            </div>
+            <button onclick="removeFromCart(${index})" class="text-red-500 text-xs font-semibold hover:underline">Supprimer</button>
+          </div>
+        `;
+      }).join('');
+      
+      cartTotal.innerText = `${total.toLocaleString()} DA`;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    function openCart() {
+      document.getElementById('cartModal').classList.remove('hidden');
+    }
+
+    function closeCart() {
+      document.getElementById('cartModal').classList.add('hidden');
+    }
+
+    function filterProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+      renderProducts(filtered);
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Votre panier est vide !");
+        return;
+      }
+      alert("Merci pour votre commande ! Nous vous contacterons pour confirmer la livraison.");
     }
 
     renderProducts();

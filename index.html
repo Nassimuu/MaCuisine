@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaCuisine - Électroménager Haut de Gamme & Mixeurs Professionnels</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .font-luxury { font-family: 'Cinzel', serif; }
+    body { font-family: 'Montserrat', sans-serif; }
+  </style>
+</head>
+<body class="bg-[#fcfbf9] text-gray-900 antialiased">
+
+  <!-- Bandeau supérieur -->
+  <div class="bg-[#111] text-[#c5a059] text-xs py-2 px-4 text-center tracking-widest uppercase font-semibold border-b border-[#222]">
+    <span>Livraison Express 58 Wilayas • Paiement Cash à la réception</span>
+  </div>
+
+  <!-- Header MaCuisine -->
+  <header class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      
+      <!-- Logo -->
+      <a href="#" class="text-left group">
+        <span class="block text-xl md:text-2xl font-black tracking-[0.2em] font-luxury text-gray-950 group-hover:text-[#c5a059] transition">
+          MA<span class="text-[#c5a059]">CUISINE</span>
+        </span>
+        <span class="block text-[9px] tracking-[0.35em] text-gray-500 font-bold uppercase">
+          Maison & Équipements Pro
+        </span>
+      </a>
+
+      <!-- Recherche -->
+      <div class="hidden md:flex flex-1 max-w-md items-center border border-gray-300 rounded-full px-4 py-1.5 focus-within:border-[#c5a059] focus-within:ring-1 focus-within:ring-[#c5a059] bg-gray-50 transition">
+        <i class="fa-solid fa-magnifying-glass text-gray-400 text-sm mr-2"></i>
+        <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Rechercher un blender, mixeur, robot..." class="w-full text-xs bg-transparent outline-none text-gray-800">
+      </div>
+
+      <!-- Panier -->
+      <div class="flex items-center gap-5">
+        <div onclick="openCart()" class="cursor-pointer relative flex items-center gap-2 group">
+          <div class="relative p-1">
+            <i class="fa-solid fa-bag-shopping text-xl text-gray-800 group-hover:text-[#c5a059] transition"></i>
+            <span id="cartCount" class="absolute -top-1 -right-1 bg-[#111] text-[#c5a059] border border-[#c5a059] font-bold rounded-full text-[10px] w-4 h-4 flex items-center justify-center">0</span>
+          </div>
+          <span class="hidden sm:inline text-xs font-semibold tracking-wider uppercase text-gray-700">Panier</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catégories -->
+    <nav class="border-t border-gray-100 bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-center gap-6 md:gap-10 overflow-x-auto text-xs uppercase tracking-widest font-semibold text-gray-700 whitespace-nowrap">
+        <button onclick="filterCategory('all')" class="hover:text-[#c5a059] transition border-b-2 border-transparent hover:border-[#c5a059] pb-1">Tous les Appareils</button>
+        <button onclick="filterCategory('blender')" class="hover:text-[#c5a059] transition border-b-2 border-transparent hover:border-[#c5a059] pb-1">Blenders Pro</button>
+        <button onclick="filterCategory('plongeant')" class="hover:text-[#c5a059] transition border-b-2 border-transparent hover:border-[#c5a059] pb-1">Mixeurs Plongeants</button>
+        <button onclick="filterCategory('hachoir')" class="hover:text-[#c5a059] transition border-b-2 border-transparent hover:border-[#c5a059] pb-1">Hachoirs & Robots</button>
+        <button onclick="filterCategory('nomade')" class="hover:text-[#c5a059] transition border-b-2 border-transparent hover:border-[#c5a059] pb-1">Mini Blenders</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Bannière -->
+  <section class="relative bg-[#111] text-white py-16 px-4 text-center overflow-hidden border-b border-[#c5a059]/30">
+    <div class="max-w-3xl mx-auto relative z-10">
+      <span class="text-xs uppercase tracking-[0.3em] text-[#c5a059] font-bold block mb-3">Performance • Puissance • Élégance</span>
+      <h1 class="text-3xl md:text-5xl font-luxury font-bold tracking-wider mb-4 leading-tight">
+        L’EXCELLENCE DANS VOTRE CUISINE
+      </h1>
+      <p class="text-sm md:text-base text-gray-300 font-light max-w-xl mx-auto mb-6">
+        Des mixeurs et blenders d'exception conçus pour sublimer vos préparations culinaires, smoothies et veloutés.
+      </p>
+      <a href="#catalogue" class="inline-block bg-[#c5a059] hover:bg-[#b08d47] text-gray-950 text-xs font-bold uppercase tracking-widest px-7 py-3 transition">
+        Découvrir la collection
+      </a>
+    </div>
+  </section>
+
+  <!-- Réassurance -->
+  <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center border-b border-gray-200 text-xs text-gray-700">
+    <div class="p-2"><i class="fa-solid fa-truck-fast text-[#c5a059] text-base mb-1 block"></i> Livraison 58 Wilayas</div>
+    <div class="p-2"><i class="fa-solid fa-hand-holding-dollar text-[#c5a059] text-base mb-1 block"></i> Paiement à la livraison</div>
+    <div class="p-2"><i class="fa-solid fa-shield-halved text-[#c5a059] text-base mb-1 block"></i> Moteurs Garantis & Puissants</div>
+    <div class="p-2"><i class="fa-brands fa-whatsapp text-[#c5a059] text-base mb-1 block"></i> Service Client Direct</div>
+  </div>
+
+  <!-- Grille Produits -->
+  <main id="catalogue" class="max-w-7xl mx-auto px-4 py-12">
+    <div class="flex justify-between items-end mb-8">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-[#c5a059]">Catalogue</span>
+        <h2 class="text-2xl font-luxury font-bold text-gray-950">Nos Modèles Phares</h2>
+      </div>
+      <span id="resultCount" class="text-xs text-gray-500 uppercase tracking-wider"></span>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="productGrid"></div>
+  </main>
+
+  <!-- Panneau Panier & Formulaire -->
+  <div id="cartModal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end backdrop-blur-sm">
+    <div class="bg-white w-full max-w-lg h-full shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
+      
+      <div>
+        <div class="flex items-center justify-between border-b pb-4 mb-4">
+          <h3 class="text-base font-luxury font-bold uppercase tracking-widest text-gray-900">
+            <i class="fa-solid fa-bag-shopping text-[#c5a059] mr-2"></i>Votre Commande
+          </h3>
+          <button onclick="closeCart()" class="text-gray-400 hover:text-gray-950 text-2xl font-bold">&times;</button>
+        </div>
+
+        <div class="mb-6">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Articles sélectionnés</h4>
+          <div id="cartItems" class="space-y-3 max-h-44 overflow-y-auto pr-1">
+            <p class="text-xs text-gray-500 italic py-4 text-center">Votre panier est actuellement vide.</p>
+          </div>
+          
+          <div class="flex justify-between font-bold text-sm border-t border-gray-100 pt-3 mt-3">
+            <span class="uppercase tracking-wider">Total à payer :</span>
+            <span id="cartTotal" class="text-[#c5a059] font-black text-base">0 DA</span>
+          </div>
+        </div>
+
+        <!-- FORMULAIRE DE COMMANDE -->
+        <div id="checkoutFormSection" class="border-t border-gray-200 pt-4">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-gray-900 mb-3 flex items-center gap-1.5">
+            <i class="fa-solid fa-truck-ramp-box text-[#c5a059]"></i> Coordonnées de livraison
+          </h4>
+          
+          <form id="orderForm" onsubmit="handleOrderSubmit(event)" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Nom et Prénom *</label>
+              <input type="text" id="custName" required placeholder="Ex: Mohamed Benali" class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none">
+            </div>
+
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Numéro de téléphone *</label>
+              <input type="tel" id="custPhone" required placeholder="Ex: 0550 12 34 56" class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none">
+            </div>
+
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Wilaya *</label>
+              <select id="custWilaya" required class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none bg-white">
+                <option value="">Sélectionnez votre Wilaya</option>
+                <option value="16 - Alger">16 - Alger</option>
+                <option value="19 - Sétif">19 - Sétif</option>
+                <option value="31 - Oran">31 - Oran</option>
+                <option value="25 - Constantine">25 - Constantine</option>
+                <option value="06 - Béjaïa">06 - Béjaïa</option>
+                <option value="09 - Blida">09 - Blida</option>
+                <option value="15 - Tizi Ouzou">15 - Tizi Ouzou</option>
+                <option value="13 - Tlemcen">13 - Tlemcen</option>
+                <option value="Autre Wilaya (à préciser)">Autre Wilaya (58 Wilayas disponibles)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-gray-700 mb-1">Adresse complète / Commune *</label>
+              <textarea id="custAddress" required rows="2" placeholder="Commune, quartier, numéro de rue..." class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none"></textarea>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded p-2.5 text-[11px] text-gray-600 flex items-center gap-2">
+              <i class="fa-solid fa-money-bill-wave text-green-600 text-sm"></i>
+              <span>Paiement à la livraison après réception de votre colis.</span>
+            </div>
+
+            <button type="submit" class="w-full bg-[#111] hover:bg-[#c5a059] text-white hover:text-black font-bold py-3.5 px-4 text-xs uppercase tracking-widest shadow transition flex items-center justify-center gap-2 mt-2">
+              <i class="fa-solid fa-check-circle text-sm"></i> Valider ma commande
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="border-t border-gray-100 pt-3 mt-4">
+        <button onclick="closeCart()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 text-xs uppercase tracking-wider font-semibold">
+          Continuer mes achats
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        category: "blender",
+        name: "Blender Master Pro 2200W",
+        feature: "Bol 2L Tritan Sans BPA • 6 Lames Japonaises",
+        power: "2200 WATTS",
+        price: 9800,
+        oldPrice: 11500,
+        badge: "Bestseller",
+        img: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=600&q=80"
+      },
+      {
+        id: 2,
+        category: "plongeant",
+        name: "Mixeur Plongeant Titan 4-en-1",
+        feature: "Pied Inox • Hachoir 500ml • Fouet Émulsionneur",
+        power: "1000 WATTS",
+        price: 4900,
+        oldPrice: null,
+        badge: "Nouveau",
+        img: "https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=600&q=80"
+      },
+      {
+        id: 3,
+        category: "hachoir",
+        name: "Hachoir Express Bol Inox 2L",
+        feature: "Double Lames Titane • Hache viandes et légumes",
+        power: "600 WATTS",
+        price: 3600,
+        oldPrice: 4200,
+        badge: "-15% OFF",
+        img: "https://images.unsplash.com/photo-1585515320310-259814833e62?w=600&q=80"
+      },
+      {
+        id: 4,
+        category: "nomade",
+        name: "Mini Blender Smoothie USB",
+        feature: "Transportable • Batterie Lithium Haute Autonomie",
+        power: "PORTABLE",
+        price: 2500,
+        oldPrice: null,
+        badge: "Tendance",
+        img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&q=80"
+      },
+      {
+        id: 5,
+        category: "blender",
+        name: "Blender Chauffant Veloutés & Soupes",
+        feature: "Cuisson Intégrée Automatique 25 min • Écran Tactile",
+        power: "1200 WATTS",
+        price: 13500,
+        oldPrice: 15000,
+        badge: "Coup de Cœur",
+        img: "https://images.unsplash.com/photo-1578643463396-0997cb5328c1?w=600&q=80"
+      },
+      {
+        id: 6,
+        category: "hachoir",
+        name: "Broyeur Café & Épices Royal",
+        feature: "Lames renforcées pour grains durs et noix",
+        power: "400 WATTS",
+        price: 2900,
+        oldPrice: null,
+        badge: "Essentiel",
+        img: "https://images.unsplash.com/photo-1593618998160-e34014e67546?w=600&q=80"
+      }
+    ];
+
+    let cart = [];
+    let activeFilter = 'all';
+
+    function renderProducts(items) {
+      const container = document.getElementById('productGrid');
+      document.getElementById('resultCount').innerText = `${items.length} appareil(s)`;
+
+      if (items.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-sm text-gray-500">Aucun produit ne correspond à votre recherche.</div>`;
+        return;
+      }
+
+      container.innerHTML = items.map(p => `
+        <div class="bg-white border border-gray-200 group flex flex-col justify-between p-3.5 hover:shadow-lg transition">
+          <div class="relative">
+            <div class="absolute top-2 left-2 flex flex-col gap-1 z-10">
+              ${p.badge ? `<span class="bg-[#111] text-[#c5a059] border border-[#c5a059]/40 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5">${p.badge}</span>` : ''}
+              <span class="bg-gray-100 text-gray-700 text-[9px] font-semibold px-2 py-0.5">${p.power}</span>
+            </div>
+
+            <div class="h-56 sm:h-64 w-full bg-gray-50 overflow-hidden flex items-center justify-center mb-3">
+              <img src="${p.img}" alt="${p.name}" class="h-full w-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+
+            <h3 class="font-luxury font-bold text-xs sm:text-sm tracking-wider text-gray-900 group-hover:text-[#c5a059] transition uppercase line-clamp-1">${p.name}</h3>
+            <p class="text-[11px] text-gray-500 mt-0.5 line-clamp-1">${p.feature}</p>
+            
+            <div class="mt-2 flex items-baseline gap-2">
+              <span class="text-sm sm:text-base font-black text-gray-950">${p.price.toLocaleString()} DA</span>
+              ${p.oldPrice ? `<span class="text-xs text-gray-400 line-through">${p.oldPrice.toLocaleString()} DA</span>` : ''}
+            </div>
+          </div>
+
+          <button onclick="addToCart(${p.id})" class="mt-3 w-full bg-transparent hover:bg-[#111] text-gray-900 hover:text-[#c5a059] border border-gray-900 hover:border-[#111] text-[10px] sm:text-xs font-bold py-2.5 uppercase tracking-widest transition">
+            Ajouter au panier
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(id) {
+      const p = products.find(x => x.id === id);
+      cart.push(p);
+      updateCart();
+      openCart();
+    }
+
+    function updateCart() {
+      document.getElementById('cartCount').innerText = cart.length;
+      const container = document.getElementById('cartItems');
+      const totalEl = document.getElementById('cartTotal');
+
+      if (cart.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-500 italic py-4 text-center">Votre panier est actuellement vide.</p>`;
+        totalEl.innerText = "0 DA";
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = cart.map((p, idx) => {
+        total += p.price;
+        return `
+          <div class="flex items-center justify-between text-xs border-b border-gray-100 pb-2">
+            <div>
+              <p class="font-bold font-luxury tracking-wide text-gray-900 uppercase">${p.name}</p>
+              <p class="text-[10px] text-gray-500">${p.power}</p>
+              <p class="text-xs font-black text-[#c5a059] mt-0.5">${p.price.toLocaleString()} DA</p>
+            </div>
+            <button onclick="removeFromCart(${idx})" class="text-gray-400 hover:text-red-500 text-xs p-1">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      totalEl.innerText = `${total.toLocaleString()} DA`;
+    }
+
+    function removeFromCart(idx) {
+      cart.splice(idx, 1);
+      updateCart();
+    }
+
+    function openCart() {
+      document.getElementById('cartModal').classList.remove('hidden');
+    }
+
+    function closeCart() {
+      document.getElementById('cartModal').classList.add('hidden');
+    }
+
+    function filterCategory(cat) {
+      activeFilter = cat;
+      applyFilters();
+    }
+
+    function filterProducts() {
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const query = document.getElementById('searchInput')?.value.toLowerCase() || '';
+      let filtered = products;
+
+      if (activeFilter !== 'all') {
+        filtered = filtered.filter(p => p.category === activeFilter);
+      }
+
+      if (query.trim() !== '') {
+        filtered = filtered.filter(p => 
+          p.name.toLowerCase().includes(query) || 
+          p.feature.toLowerCase().includes(query)
+        );
+      }
+
+      renderProducts(filtered);
+    }
+
+    // REMPLACEZ PAR VOTRE NUMERO WHATSAPP SI VOUS EN AVEZ UN (ex: 213555123456)
+    const MON_WHATSAPP = "213000000000";
+
+    function handleOrderSubmit(e) {
+      e.preventDefault();
+
+      if (cart.length === 0) {
+        alert("Votre panier est vide ! Veuillez ajouter au moins un produit.");
+        return;
+      }
+
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const wilaya = document.getElementById('custWilaya').value;
+      const address = document.getElementById('custAddress').value.trim();
+
+      let total = 0;
+      let orderList = "";
+      cart.forEach((item, index) => {
+        orderList += `${index + 1}. ${item.name} (${item.power}) - ${item.price.toLocaleString()} DA\n`;
+        total += item.price;
+      });
+
+      let message = `🛒 *NOUVELLE COMMANDE - MACUISINE*\n\n`;
+      message += `👤 *Client :* ${name}\n`;
+      message += `📞 *Téléphone :* ${phone}\n`;
+      message += `📍 *Wilaya :* ${wilaya}\n`;
+      message += `🏠 *Adresse :* ${address}\n\n`;
+      message += `📦 *Articles commandés :*\n${orderList}\n`;
+      message += `💵 *Total à payer à la réception : ${total.toLocaleString()} DA*\n`;
+      message += `🚚 *Mode :* Paiement Cash à la livraison`;
+
+      const encoded = encodeURIComponent(message);
+      
+      if (MON_WHATSAPP !== "213000000000") {
+        window.open(`https://wa.me/${MON_WHATSAPP}?text=${encoded}`, '_blank');
+      }
+
+      alert("Merci " + name + " ! Votre commande a été enregistrée avec succès. Notre équipe vous contactera au " + phone + " pour confirmer la livraison.");
+      cart = [];
+      updateCart();
+      closeCart();
+      document.getElementById('orderForm').reset();
+    }
+
+    renderProducts(products);
+  </script>
+</body>
+</html>

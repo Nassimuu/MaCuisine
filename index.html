@@ -16,7 +16,7 @@
 
   <!-- Bandeau supérieur -->
   <div class="bg-[#111] text-[#c5a059] text-xs py-2 px-4 text-center tracking-widest uppercase font-semibold border-b border-[#222]">
-    <span>Livraison Express 58 Wilayas • Paiement Cash à la réception</span>
+    <span>Livraison Express sur tout le territoire national • Paiement Cash à la réception</span>
   </div>
 
   <!-- Header MaCuisine -->
@@ -81,13 +81,13 @@
 
   <!-- Réassurance -->
   <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center border-b border-gray-200 text-xs text-gray-700">
-    <div class="p-2"><i class="fa-solid fa-truck-fast text-[#c5a059] text-base mb-1 block"></i> Livraison 58 Wilayas</div>
+    <div class="p-2"><i class="fa-solid fa-truck-fast text-[#c5a059] text-base mb-1 block"></i> Livraison Toutes Wilayas</div>
     <div class="p-2"><i class="fa-solid fa-hand-holding-dollar text-[#c5a059] text-base mb-1 block"></i> Paiement à la livraison</div>
     <div class="p-2"><i class="fa-solid fa-shield-halved text-[#c5a059] text-base mb-1 block"></i> Moteurs Garantis & Puissants</div>
     <div class="p-2"><i class="fa-brands fa-whatsapp text-[#c5a059] text-base mb-1 block"></i> Service Client Direct</div>
   </div>
 
-  <!-- Grille Produits -->
+  <!-- Grille de Produits -->
   <main id="catalogue" class="max-w-7xl mx-auto px-4 py-12">
     <div class="flex justify-between items-end mb-8">
       <div>
@@ -100,7 +100,7 @@
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="productGrid"></div>
   </main>
 
-  <!-- Panneau Panier & Formulaire -->
+  <!-- Tiroir Panier & Formulaire -->
   <div id="cartModal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end backdrop-blur-sm">
     <div class="bg-white w-full max-w-lg h-full shadow-2xl flex flex-col justify-between p-6 overflow-y-auto">
       
@@ -112,6 +112,7 @@
           <button onclick="closeCart()" class="text-gray-400 hover:text-gray-950 text-2xl font-bold">&times;</button>
         </div>
 
+        <!-- Articles -->
         <div class="mb-6">
           <h4 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Articles sélectionnés</h4>
           <div id="cartItems" class="space-y-3 max-h-44 overflow-y-auto pr-1">
@@ -124,7 +125,7 @@
           </div>
         </div>
 
-        <!-- FORMULAIRE DE COMMANDE -->
+        <!-- FORMULAIRE -->
         <div id="checkoutFormSection" class="border-t border-gray-200 pt-4">
           <h4 class="text-xs font-bold uppercase tracking-widest text-gray-900 mb-3 flex items-center gap-1.5">
             <i class="fa-solid fa-truck-ramp-box text-[#c5a059]"></i> Coordonnées de livraison
@@ -145,26 +146,18 @@
               <label class="block font-semibold text-gray-700 mb-1">Wilaya *</label>
               <select id="custWilaya" required class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none bg-white">
                 <option value="">Sélectionnez votre Wilaya</option>
-                <option value="16 - Alger">16 - Alger</option>
-                <option value="19 - Sétif">19 - Sétif</option>
-                <option value="31 - Oran">31 - Oran</option>
-                <option value="25 - Constantine">25 - Constantine</option>
-                <option value="06 - Béjaïa">06 - Béjaïa</option>
-                <option value="09 - Blida">09 - Blida</option>
-                <option value="15 - Tizi Ouzou">15 - Tizi Ouzou</option>
-                <option value="13 - Tlemcen">13 - Tlemcen</option>
-                <option value="Autre Wilaya (à préciser)">Autre Wilaya (58 Wilayas disponibles)</option>
+                <!-- Wilayas insérées automatiquement -->
               </select>
             </div>
 
             <div>
-              <label class="block font-semibold text-gray-700 mb-1">Adresse complète / Commune *</label>
-              <textarea id="custAddress" required rows="2" placeholder="Commune, quartier, numéro de rue..." class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none"></textarea>
+              <label class="block font-semibold text-gray-700 mb-1">Commune / Adresse de livraison *</label>
+              <textarea id="custAddress" required rows="2" placeholder="Commune, quartier, repère..." class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none"></textarea>
             </div>
 
             <div class="bg-gray-50 border border-gray-200 rounded p-2.5 text-[11px] text-gray-600 flex items-center gap-2">
               <i class="fa-solid fa-money-bill-wave text-green-600 text-sm"></i>
-              <span>Paiement à la livraison après réception de votre colis.</span>
+              <span>Paiement en espèces à la livraison après contrôle du colis.</span>
             </div>
 
             <button type="submit" class="w-full bg-[#111] hover:bg-[#c5a059] text-white hover:text-black font-bold py-3.5 px-4 text-xs uppercase tracking-widest shadow transition flex items-center justify-center gap-2 mt-2">
@@ -185,6 +178,36 @@
   </div>
 
   <script>
+    // LISTE OFFICIELLE DU NOUVEAU DÉCOUPAGE TERRITORIAL
+    const wilayas = [
+      "01 - Adrar", "02 - Chlef", "03 - Laghouat", "04 - Oum El Bouaghi", "05 - Batna", 
+      "06 - Béjaïa", "07 - Biskra", "08 - Béchar", "09 - Blida", "10 - Bouira", 
+      "11 - Tamanrasset", "12 - Tébessa", "13 - Tlemcen", "14 - Tiaret", "15 - Tizi Ouzou", 
+      "16 - Alger", "17 - Djelfa", "18 - Jijel", "19 - Sétif", "20 - Saïda", 
+      "21 - Skikda", "22 - Sidi Bel Abbès", "23 - Annaba", "24 - Guelma", "25 - Constantine", 
+      "26 - Médéa", "27 - Mostaganem", "28 - M'Sila", "29 - Mascara", "30 - Ouargla", 
+      "31 - Oran", "32 - El Bayadh", "33 - Illizi", "34 - Bordj Bou Arreridj", "35 - Boumerdès", 
+      "36 - El Tarf", "37 - Tindouf", "38 - Tissemsilt", "39 - El Oued", "40 - Khenchela", 
+      "41 - Souk Ahras", "42 - Tipaza", "43 - Mila", "44 - Aïn Defla", "45 - Naâma", 
+      "46 - Aïn Témouchent", "47 - Ghardaïa", "48 - Relizane", "49 - Timimoun", "50 - Bordj Badji Mokhtar", 
+      "51 - Ouled Djellal", "52 - Béni Abbès", "53 - In Salah", "54 - In Guezzam", "55 - Touggourt", 
+      "56 - Djanet", "57 - El M'Ghair", "58 - El Meniaa",
+      // Nouvelles wilayas
+      "59 - Aflou", "60 - Barika", "61 - El Kantara", "62 - Bir El Ater", "63 - El Aricha",
+      "64 - Ksar Chellala", "65 - Aïn Oussara", "66 - Messaad", "67 - Ksar El Boukhari",
+      "68 - Bou Saâda", "69 - El Abiodh Sidi Cheikh"
+    ];
+
+    function populateWilayas() {
+      const select = document.getElementById('custWilaya');
+      wilayas.forEach(w => {
+        const opt = document.createElement('option');
+        opt.value = w;
+        opt.innerText = w;
+        select.appendChild(opt);
+      });
+    }
+
     const products = [
       {
         id: 1,
@@ -372,7 +395,6 @@
       renderProducts(filtered);
     }
 
-    // REMPLACEZ PAR VOTRE NUMERO WHATSAPP SI VOUS EN AVEZ UN (ex: 213555123456)
     const MON_WHATSAPP = "213000000000";
 
     function handleOrderSubmit(e) {
@@ -410,13 +432,14 @@
         window.open(`https://wa.me/${MON_WHATSAPP}?text=${encoded}`, '_blank');
       }
 
-      alert("Merci " + name + " ! Votre commande a été enregistrée avec succès. Notre équipe vous contactera au " + phone + " pour confirmer la livraison.");
+      alert("Merci " + name + " ! Votre commande a bien été enregistrée pour la wilaya : " + wilaya + ".\nNous vous contacterons au " + phone + " pour confirmer la livraison.");
       cart = [];
       updateCart();
       closeCart();
       document.getElementById('orderForm').reset();
     }
 
+    populateWilayas();
     renderProducts(products);
   </script>
 </body>

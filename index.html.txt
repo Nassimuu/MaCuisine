@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique Style Amazon - 100% Gratuit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- En-tête principal Amazon -->
+  <header class="bg-[#131921] text-white text-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center gap-4 px-4 py-2">
+      <!-- Logo -->
+      <a href="#" class="text-xl font-bold tracking-wider hover:border border-white p-1 rounded">
+        MARCHÉ<span class="text-[#febd69]">.DZ</span>
+      </a>
+
+      <!-- Barre de recherche centrale -->
+      <div class="flex flex-1 items-center h-10 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-[#f90]">
+        <select class="bg-gray-200 text-gray-800 text-xs px-2 h-full border-r border-gray-300 outline-none">
+          <option>Tous nos rayons</option>
+          <option>Électronique</option>
+          <option>Maison & Cuisine</option>
+          <option>Alimentation</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Rechercher des articles..." class="w-full h-full px-3 text-black text-sm outline-none">
+        <button class="bg-[#febd69] hover:bg-[#f3a847] text-gray-900 px-5 h-full flex items-center justify-center">
+          <i class="fa-solid fa-magnifying-glass text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Compte & Commandes -->
+      <div class="hover:border border-white p-1 rounded cursor-pointer leading-tight">
+        <span class="text-xs text-gray-300">Bonjour, Identifiez-vous</span><br>
+        <span class="font-bold text-xs">Compte et listes</span>
+      </div>
+
+      <!-- Panier -->
+      <div class="hover:border border-white p-2 rounded cursor-pointer flex items-center gap-2">
+        <div class="relative">
+          <i class="fa-solid fa-cart-shopping text-2xl text-white"></i>
+          <span id="cartCount" class="absolute -top-1 left-3 bg-[#febd69] text-gray-900 font-bold rounded-full text-xs px-1">0</span>
+        </div>
+        <span class="font-bold text-xs hidden sm:inline mt-2">Panier</span>
+      </div>
+    </div>
+
+    <!-- Barre sous-navigation -->
+    <nav class="bg-[#232f3e] text-white text-xs px-4 py-1.5 flex items-center gap-5 overflow-x-auto">
+      <span class="font-bold flex items-center gap-1 cursor-pointer"><i class="fa-solid fa-bars"></i> Toutes</span>
+      <a href="#" class="hover:underline">Meilleures ventes</a>
+      <a href="#" class="hover:underline">Nouveautés</a>
+      <a href="#" class="hover:underline">Promotions</a>
+      <a href="#" class="hover:underline">Service Client</a>
+    </nav>
+  </header>
+
+  <!-- Bannière principale -->
+  <section class="relative bg-gradient-to-b from-[#232f3e] to-gray-100 text-white py-12 px-6">
+    <div class="max-w-7xl mx-auto text-center md:text-left">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-2">Des milliers d'articles au meilleur prix</h1>
+      <p class="text-gray-300 mb-4">Commandez en ligne et payez directement à la livraison en toute sécurité.</p>
+    </div>
+  </section>
+
+  <!-- Grille de Produits -->
+  <main class="max-w-7xl mx-auto -mt-6 px-4 pb-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="productGrid">
+      <!-- Les cartes produits s'affichent dynamiquement ici -->
+    </div>
+  </main>
+
+  <script>
+    // Catalogue d'exemple modifiable
+    const products = [
+      { id: 1, name: "Écouteurs Sans Fil Bluetooth 5.3", price: 2500, rating: 4.5, reviews: 142, img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&q=80" },
+      { id: 2, name: "Montre Connectée Sport & Santé", price: 4800, rating: 4.8, reviews: 89, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" },
+      { id: 3, name: "Sac à Dos Imperméable USB", price: 3200, rating: 4.2, reviews: 56, img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&q=80" },
+      { id: 4, name: "Lampe LED de Bureau Tactile", price: 1900, rating: 4.6, reviews: 210, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&q=80" }
+    ];
+
+    let cartCount = 0;
+
+    function renderProducts() {
+      const container = document.getElementById('productGrid');
+      container.innerHTML = products.map(p => `
+        <div class="bg-white p-4 rounded shadow-sm hover:shadow-md transition flex flex-col justify-between border border-gray-200">
+          <div>
+            <div class="h-44 w-full mb-3 flex items-center justify-center overflow-hidden bg-gray-50 rounded">
+              <img src="${p.img}" alt="${p.name}" class="h-full object-contain">
+            </div>
+            <h3 class="font-medium text-sm line-clamp-2 hover:text-[#007185] cursor-pointer">${p.name}</h3>
+            <div class="flex items-center gap-1 text-xs text-[#de7921] my-1">
+              <span>★ ${p.rating}</span>
+              <span class="text-gray-500">(${p.reviews})</span>
+            </div>
+            <div class="text-xl font-bold text-gray-900 mt-2">
+              ${p.price.toLocaleString()} <span class="text-xs font-normal">DA</span>
+            </div>
+          </div>
+          <button onclick="addToCart()" class="mt-4 w-full bg-[#ffd814] hover:bg-[#f7ca00] text-gray-900 text-xs font-semibold py-2 px-3 rounded-full shadow-sm">
+            Ajouter au panier
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function addToCart() {
+      cartCount++;
+      document.getElementById('cartCount').innerText = cartCount;
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>

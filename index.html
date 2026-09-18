@@ -354,7 +354,7 @@
     </div>
   </div>
 
-  <!-- Modal Élégant Succès Commande -->
+  <!-- Modal Succès Commande -->
   <div id="successModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm modal-backdrop">
     <div class="bg-white max-w-md w-full p-6 text-center shadow-2xl relative border-t-4 border-[#c5a059] rounded-b">
       <div class="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
@@ -377,7 +377,7 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- Footer avec Service Commercial & Email -->
   <footer class="bg-[#111] text-gray-400 border-t border-[#222] text-xs py-12 mt-16">
     <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
       <div>
@@ -401,10 +401,19 @@
 
       <div>
         <h5 class="text-white uppercase font-bold tracking-wider mb-3 text-xs">Service Commercial</h5>
-        <p class="text-gray-400 mb-2">Besoin d'un conseil ou d'une commande directe par téléphone ?</p>
-        <a href="https://wa.me/213778756084" target="_blank" class="inline-flex items-center gap-2 text-[#c5a059] hover:text-white font-bold transition">
-          <i class="fa-brands fa-whatsapp text-lg"></i> +213 778 75 60 84
-        </a>
+        <p class="text-gray-400 mb-2">Besoin d'un conseil ou d'une commande directe ?</p>
+        <div class="space-y-2">
+          <div>
+            <a href="https://wa.me/213778756084" target="_blank" class="inline-flex items-center gap-2 text-[#c5a059] hover:text-white font-bold transition">
+              <i class="fa-brands fa-whatsapp text-lg"></i> +213 778 75 60 84
+            </a>
+          </div>
+          <div>
+            <a href="mailto:contact@macuisine-dz.com" class="inline-flex items-center gap-2 text-[#c5a059] hover:text-white font-bold transition">
+              <i class="fa-regular fa-envelope text-base"></i> aitmedjebernassim@gmail.com
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     
@@ -415,8 +424,11 @@
 
   <!-- Code JavaScript -->
   <script>
-    // Configuration : contact WhatsApp commercial
+    // Configuration : contact commercial
     const MON_WHATSAPP = "213778756084";
+    
+    // Obtenez votre clé gratuite en 10s sur https://web3forms.com avec votre adresse e-mail
+    const WEB3FORMS_ACCESS_KEY = "f6bbf150-dd93-4c37-ad3c-7af7e7133784";
 
     // Catalogue des produits avec photos situées à la racine (au même niveau que index.html)
     const products = [
@@ -710,7 +722,7 @@
         };
       }
 
-      // Configuration des images réelles avec fallback
+      // Configuration des images avec fallback
       const imagesList = p.images && p.images.length > 0 ? p.images : [`https://placehold.co/600x600/f8f8f8/333333?text=${encodeURIComponent(p.ref)}`];
       mainImg.src = imagesList[0];
       mainImg.onerror = () => {
@@ -1013,6 +1025,31 @@
         total += itemSubtotal;
         orderListWhatsApp += `${index + 1}. ${item.product.name} (x${item.qty}) - ${itemSubtotal.toLocaleString('fr-FR')} DA\n`;
       });
+
+      // ENVOI INSTANTANÉ DE LA NOTIFICATION PAR E-MAIL (Web3Forms)
+      if (WEB3FORMS_ACCESS_KEY && WEB3FORMS_ACCESS_KEY !== "VOTRE_CLE_WEB3FORMS_ICI") {
+        const emailPayload = {
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `🛒 NOUVELLE COMMANDE MaCuisine : ${name} (${total.toLocaleString('fr-FR')} DA)`,
+          from_name: "MaCuisine Algérie",
+          "Nom du client": name,
+          "Numéro de téléphone": verifiedPhone,
+          "Wilaya de livraison": wilaya,
+          "Adresse complète": address,
+          "Articles commandés": orderListWhatsApp,
+          "Total à encaisser": `${total.toLocaleString('fr-FR')} DA`,
+          "Date": new Date().toLocaleString('fr-FR', { timeZone: 'Africa/Algiers' })
+        };
+
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(emailPayload)
+        }).catch(err => console.error("Erreur envoi notification email:", err));
+      }
 
       // Construction du message WhatsApp
       let message = `🛒 *NOUVELLE COMMANDE - MACUISINE*\n\n`;

@@ -355,7 +355,7 @@
   </div>
 
   <!-- Modal Succès Commande -->
-  <div id="successModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm modal-backdrop">
+  <div id="successModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm modal-backdrop" onclick="handleSuccessBackdropClick(event)">
     <div class="bg-white max-w-md w-full p-6 text-center shadow-2xl relative border-t-4 border-[#c5a059] rounded-b">
       <div class="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
         <i class="fa-solid fa-check"></i>
@@ -410,7 +410,7 @@
           </div>
           <div>
             <a href="mailto:contact@macuisine-dz.com" class="inline-flex items-center gap-2 text-[#c5a059] hover:text-white font-bold transition">
-              <i class="fa-regular fa-envelope text-base"></i> macuisineee@gmail.com
+              <i class="fa-regular fa-envelope text-base"></i> contact@macuisine-dz.com
             </a>
           </div>
         </div>
@@ -428,7 +428,7 @@
     const MON_WHATSAPP = "213778756084";
     
     // Obtenez votre clé gratuite en 10s sur https://web3forms.com avec votre adresse e-mail
-    const WEB3FORMS_ACCESS_KEY = "ec06dd5f-36b4-4e40-abcd-d81db8e46ca3";
+    const WEB3FORMS_ACCESS_KEY = "VOTRE_CLE_WEB3FORMS_ICI";
 
     // Catalogue des produits avec photos situées à la racine (au même niveau que index.html)
     const products = [
@@ -991,14 +991,30 @@
       };
     }
 
+    // Pré-remplir automatiquement les informations du client s'il a déjà commandé
+    function loadSavedCustomerInfo() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('macuisine_customer') || '{}');
+        if (saved.name) document.getElementById('custName').value = saved.name;
+        if (saved.phone) document.getElementById('custPhone').value = saved.phone;
+        if (saved.wilaya) document.getElementById('custWilaya').value = saved.wilaya;
+        if (saved.address) document.getElementById('custAddress').value = saved.address;
+      } catch (err) {
+        console.warn('Impossible de charger les données client locales:', err);
+      }
+    }
+
     // Validation et envoi du formulaire de commande
-    function handleOrderSubmit(e) {
+    async function handleOrderSubmit(e) {
       e.preventDefault();
 
       if (cart.length === 0) {
         showToast("Votre panier est vide ! Veuillez sélectionner un article.");
         return;
       }
+
+      const submitBtn = document.getElementById('submitOrderBtn');
+      const originalBtnHtml = submitBtn.innerHTML;
 
       const name = document.getElementById('custName').value.trim();
       const rawPhone = document.getElementById('custPhone').value.trim();
@@ -1016,6 +1032,22 @@
       }
 
       const verifiedPhone = phoneValidation.formatted;
+
+      // Sauvegarde des coordonnées dans le navigateur pour les prochaines commandes
+      try {
+        localStorage.setItem('macuisine_customer', JSON.stringify({
+          name: name,
+          phone: verifiedPhone,
+          wilaya: wilaya,
+          address: address
+        }));
+      } catch (err) {
+        console.warn('Erreur stockage local:', err);
+      }
+
+      // Désactiver le bouton pendant l'envoi pour éviter les doubles clics
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-sm"></i> Enregistrement en cours...`;
 
       // Détails du panier
       let total = 0;
@@ -1041,14 +1073,18 @@
           "Date": new Date().toLocaleString('fr-FR', { timeZone: 'Africa/Algiers' })
         };
 
-        fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify(emailPayload)
-        }).catch(err => console.error("Erreur envoi notification email:", err));
+        try {
+          await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify(emailPayload)
+          });
+        } catch (err) {
+          console.error("Erreur envoi notification email:", err);
+        }
       }
 
       // Construction du message WhatsApp
@@ -1076,19 +1112,29 @@
         document.getElementById('whatsappLinkWrapper').classList.remove('hidden');
       }
 
-      // Nettoyage
+      // Réactivation du bouton
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
+
+      // Nettoyage du panier pour la prochaine commande
       cart = [];
       updateCartUI();
       closeCart();
-      document.getElementById('orderForm').reset();
       openSuccessModal();
     }
 
     function openSuccessModal() {
       document.getElementById('successModal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
     }
     function closeSuccessModal() {
       document.getElementById('successModal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+    function handleSuccessBackdropClick(e) {
+      if (e.target.id === 'successModal') {
+        closeSuccessModal();
+      }
     }
 
     // Gestion du toast flottant
@@ -1120,6 +1166,7 @@
     // Initialisation
     document.addEventListener('DOMContentLoaded', () => {
       populateWilayas();
+      loadSavedCustomerInfo();
       renderProducts(products);
       updateCartUI();
     });

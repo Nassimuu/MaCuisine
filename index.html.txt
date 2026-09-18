@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaCuisine - Électroménager Haut de Gamme & Mixeurs Professionnels Algérie</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Polices Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    .font-luxury { font-family: 'Cinzel', serif; }
+    body { font-family: 'Montserrat', sans-serif; }
+    
+    /* Défilement fluide de la barre des catégories */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Animation du badge panier et toast */
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+    .badge-pop { animation: pop 0.25s ease-in-out; }
+
+    /* Transitions des tiroirs et modales */
+    .modal-backdrop {
+      transition: opacity 0.25s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-[#faf9f6] text-gray-900 antialiased min-h-screen flex flex-col selection:bg-[#c5a059]/30 selection:text-gray-950">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 ease-out bg-[#111] text-white border-l-4 border-[#c5a059] shadow-2xl px-5 py-3.5 rounded-md flex items-center gap-3 text-xs max-w-sm">
+    <i class="fa-solid fa-circle-check text-[#c5a059] text-lg"></i>
+    <span id="toastMessage" class="font-medium">Produit ajouté au panier</span>
+  </div>
+
+  <!-- Bandeau supérieur d'annonces -->
+  <div class="bg-[#111] text-[#c5a059] text-[11px] py-2 px-4 text-center tracking-widest uppercase font-medium border-b border-[#222]">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
+      <span class="inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast"></i> Livraison Express 58 Wilayas</span>
+      <span class="hidden sm:inline text-gray-600">•</span>
+      <span class="inline-flex items-center gap-1.5"><i class="fa-solid fa-hand-holding-dollar"></i> Paiement Cash à la Réception</span>
+      <span class="hidden sm:inline text-gray-600">•</span>
+      <span class="inline-flex items-center gap-1.5"><i class="fa-solid fa-shield"></i> Garantie Moteur 1 An</span>
+    </div>
+  </div>
+
+  <!-- Header MaCuisine -->
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-gray-200 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      
+      <!-- Logo -->
+      <a href="#" class="text-left group flex-shrink-0">
+        <span class="block text-xl md:text-2xl font-black tracking-[0.2em] font-luxury text-gray-950 group-hover:text-[#c5a059] transition-colors">
+          MA<span class="text-[#c5a059]">CUISINE</span>
+        </span>
+        <span class="block text-[8px] md:text-[9px] tracking-[0.35em] text-gray-500 font-bold uppercase">
+          Maison &amp; Équipements Pro
+        </span>
+      </a>
+
+      <!-- Recherche Desktop -->
+      <div class="hidden md:flex flex-1 max-w-md items-center border border-gray-300 rounded-full px-4 py-1.5 focus-within:border-[#c5a059] focus-within:ring-2 focus-within:ring-[#c5a059]/20 bg-gray-50/70 transition">
+        <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs mr-2.5"></i>
+        <input type="text" id="searchInputDesktop" oninput="handleSearch(this.value)" placeholder="Rechercher blender, robot, hachoir..." class="w-full text-xs bg-transparent outline-none text-gray-800 placeholder-gray-400">
+        <button onclick="clearSearch()" id="clearSearchBtnDesktop" class="hidden text-gray-400 hover:text-gray-600 text-xs ml-1 p-0.5" title="Effacer la recherche">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Actions (Recherche Mobile, Assistance & Panier) -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        <!-- Bouton WhatsApp Rapide -->
+        <a href="https://wa.me/213778756084?text=Bonjour%20MaCuisine,%20je%20souhaite%20me%20renseigner%20sur%20vos%20appareils." target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 hover:text-emerald-700 transition" title="Contacter sur WhatsApp">
+          <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
+          <span class="text-[11px] uppercase tracking-wider">Aide</span>
+        </a>
+
+        <!-- Bouton loupe mobile -->
+        <button onclick="toggleMobileSearch()" class="md:hidden text-gray-700 hover:text-[#c5a059] p-2 text-base transition" aria-label="Ouvrir la recherche">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+        <!-- Bouton Panier -->
+        <button onclick="openCart()" class="cursor-pointer relative flex items-center gap-2 group bg-gray-100 hover:bg-[#111] px-3 py-2 rounded-full border border-gray-200 hover:border-black transition-all" aria-label="Voir mon panier">
+          <div class="relative">
+            <i class="fa-solid fa-bag-shopping text-base text-gray-800 group-hover:text-[#c5a059] transition-colors"></i>
+            <span id="cartCount" class="absolute -top-2 -right-2 bg-[#111] group-hover:bg-[#c5a059] text-[#c5a059] group-hover:text-black border border-[#c5a059] font-bold rounded-full text-[9px] w-4 h-4 flex items-center justify-center transition-colors">0</span>
+          </div>
+          <span class="hidden sm:inline text-[11px] font-bold tracking-wider uppercase text-gray-800 group-hover:text-white transition-colors">Panier</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Barre de Recherche Mobile déployable -->
+    <div id="mobileSearchWrapper" class="hidden md:hidden px-4 pb-3 border-t border-gray-100 bg-white">
+      <div class="flex items-center border border-gray-300 rounded-full px-3 py-1.5 bg-gray-50 mt-2">
+        <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs mr-2"></i>
+        <input type="text" id="searchInputMobile" oninput="handleSearch(this.value)" placeholder="Rechercher un appareil..." class="w-full text-xs bg-transparent outline-none text-gray-800">
+        <button onclick="clearSearch()" class="text-gray-400 hover:text-gray-600 text-xs px-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Catégories de Filtre -->
+    <nav class="border-t border-gray-100 bg-white/95">
+      <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-start md:justify-center gap-4 md:gap-8 overflow-x-auto text-[11px] uppercase tracking-widest font-semibold text-gray-600 whitespace-nowrap no-scrollbar" id="categoryNav">
+        <button onclick="filterCategory('all')" data-cat="all" class="cat-btn text-[#c5a059] border-b-2 border-[#c5a059] pb-1 transition-all">Tous les Appareils</button>
+        <button onclick="filterCategory('plongeant')" data-cat="plongeant" class="cat-btn hover:text-[#c5a059] border-b-2 border-transparent hover:border-[#c5a059] pb-1 transition-all">Mixeurs &amp; Packs</button>
+        <button onclick="filterCategory('bouilloire')" data-cat="bouilloire" class="cat-btn hover:text-[#c5a059] border-b-2 border-transparent hover:border-[#c5a059] pb-1 transition-all">Bouilloires</button>
+        <button onclick="filterCategory('batteur')" data-cat="batteur" class="cat-btn hover:text-[#c5a059] border-b-2 border-transparent hover:border-[#c5a059] pb-1 transition-all">Batteurs</button>
+        <button onclick="filterCategory('repassage')" data-cat="repassage" class="cat-btn hover:text-[#c5a059] border-b-2 border-transparent hover:border-[#c5a059] pb-1 transition-all">Fers à Repasser</button>
+        <button onclick="filterCategory('jus')" data-cat="jus" class="cat-btn hover:text-[#c5a059] border-b-2 border-transparent hover:border-[#c5a059] pb-1 transition-all">Presse-Agrumes</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Bannière Héro -->
+  <section class="relative bg-[#111] text-white py-16 md:py-24 px-4 text-center overflow-hidden border-b border-[#c5a059]/30">
+    <div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#c5a059_1px,transparent_1px)] [background-size:20px_20px]"></div>
+    
+    <div class="max-w-3xl mx-auto relative z-10">
+      <span class="inline-block border border-[#c5a059]/40 bg-[#1e1e1e] text-[10px] md:text-xs uppercase tracking-[0.3em] text-[#c5a059] font-bold px-3 py-1 rounded-full mb-4">
+        Performance • Moteurs Cuivre • Haute Robustesse
+      </span>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-luxury font-bold tracking-wider mb-4 leading-tight">
+        L’EXCELLENCE DANS VOTRE CUISINE
+      </h1>
+      <p class="text-xs sm:text-sm md:text-base text-gray-300 font-light max-w-xl mx-auto mb-8 leading-relaxed">
+        Des appareils culinaires et mixeurs puissants testés pour sublimer vos veloutés, sauces, jus frais et préparations gourmandes.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="#catalogue" class="inline-flex items-center gap-2 bg-[#c5a059] hover:bg-[#b08d47] text-gray-950 text-xs font-bold uppercase tracking-widest px-8 py-3.5 transition-all transform active:scale-95 shadow-lg rounded">
+          <i class="fa-solid fa-utensils"></i> Explorer les Modèles
+        </a>
+        <button onclick="openCart()" class="inline-flex items-center gap-2 border border-gray-600 hover:border-[#c5a059] text-gray-200 hover:text-[#c5a059] text-xs font-bold uppercase tracking-widest px-6 py-3.5 transition-all rounded bg-white/5 backdrop-blur-sm">
+          <i class="fa-solid fa-basket-shopping"></i> Mon Panier
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Réassurance & Avantages -->
+  <div class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-xs text-gray-700">
+      <div class="p-2 flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center mb-2">
+          <i class="fa-solid fa-truck-fast text-[#c5a059] text-lg"></i>
+        </div>
+        <span class="font-bold text-gray-900">Livraison 58 Wilayas</span>
+        <span class="text-[10px] text-gray-500 mt-0.5">Directement chez vous</span>
+      </div>
+      <div class="p-2 flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center mb-2">
+          <i class="fa-solid fa-hand-holding-dollar text-[#c5a059] text-lg"></i>
+        </div>
+        <span class="font-bold text-gray-900">Paiement à la Livraison</span>
+        <span class="text-[10px] text-gray-500 mt-0.5">Inspectez votre colis avant de payer</span>
+      </div>
+      <div class="p-2 flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center mb-2">
+          <i class="fa-solid fa-shield-halved text-[#c5a059] text-lg"></i>
+        </div>
+        <span class="font-bold text-gray-900">Garantie &amp; Fiabilité</span>
+        <span class="text-[10px] text-gray-500 mt-0.5">Appareils vérifiés &amp; certifiés</span>
+      </div>
+      <div class="p-2 flex flex-col items-center">
+        <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center mb-2">
+          <i class="fa-brands fa-whatsapp text-[#c5a059] text-lg"></i>
+        </div>
+        <span class="font-bold text-gray-900">Service Client 7j/7</span>
+        <span class="text-[10px] text-gray-500 mt-0.5">Assistance téléphonique &amp; WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille de Produits -->
+  <main id="catalogue" class="max-w-7xl mx-auto px-4 py-12 flex-1 w-full">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 border-b border-gray-200 pb-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-widest text-[#c5a059] block">Catalogue Exclusif</span>
+        <h2 class="text-2xl sm:text-3xl font-luxury font-bold text-gray-950">Nos Modèles Phares</h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <span id="resultCount" class="text-xs text-gray-500 uppercase tracking-wider font-semibold">0 appareil(s)</span>
+      </div>
+    </div>
+
+    <!-- Conteneur Produits -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-6" id="productGrid"></div>
+  </main>
+
+  <!-- Modal Galerie Photos Réelles & Détails Produit -->
+  <div id="productDetailModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-3 sm:p-4 backdrop-blur-sm modal-backdrop" onclick="handleDetailBackdropClick(event)">
+    <div class="bg-white max-w-2xl w-full rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]">
+      
+      <!-- Colonne Images (Grande photo + Galerie vignettes) -->
+      <div class="w-full md:w-1/2 bg-gray-50 p-4 flex flex-col justify-between border-b md:border-b-0 md:border-r border-gray-200">
+        <div class="relative w-full h-60 sm:h-72 bg-white rounded flex items-center justify-center overflow-hidden border border-gray-200">
+          <img id="detailMainImg" src="" alt="Photo réelle du produit" class="h-full w-full object-contain transition-opacity duration-200">
+          <span class="absolute top-2 left-2 bg-[#111] text-[#c5a059] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 border border-[#c5a059]/40 rounded">
+            Photos réelles
+          </span>
+        </div>
+
+        <!-- Vignettes des photos réelles -->
+        <div class="mt-3">
+          <p class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold mb-1.5 text-center">Cliquez sur une photo pour agrandir</p>
+          <div id="detailThumbnails" class="flex items-center justify-center gap-2 overflow-x-auto pb-1 no-scrollbar"></div>
+        </div>
+      </div>
+
+      <!-- Colonne Détails & Action Rapide -->
+      <div class="w-full md:w-1/2 p-5 flex flex-col justify-between overflow-y-auto">
+        <div>
+          <div class="flex justify-between items-start">
+            <span id="detailCategory" class="text-[10px] uppercase font-bold tracking-widest text-[#c5a059]">Catégorie</span>
+            <button onclick="closeProductDetail()" class="text-gray-400 hover:text-gray-900 text-2xl font-bold leading-none p-1" title="Fermer (Échap)">&times;</button>
+          </div>
+
+          <h3 id="detailName" class="text-lg font-luxury font-bold text-gray-950 mt-1 uppercase leading-snug">Nom du produit</h3>
+          <p id="detailFeature" class="text-xs text-gray-600 mt-2 leading-relaxed">Description détaillée du produit.</p>
+
+          <!-- Badges techniques -->
+          <div class="mt-4 flex flex-wrap gap-2 text-[10px] font-semibold">
+            <span id="detailPower" class="bg-gray-100 border border-gray-200 px-2.5 py-1 text-gray-800 rounded">PUISSANCE</span>
+            <span class="bg-green-50 border border-green-200 text-green-700 px-2.5 py-1 rounded flex items-center gap-1">
+              <i class="fa-solid fa-check"></i> En Stock
+            </span>
+            <span class="bg-amber-50 border border-amber-200 text-amber-800 px-2.5 py-1 rounded flex items-center gap-1">
+              <i class="fa-solid fa-shield"></i> Garantie 1 An
+            </span>
+          </div>
+
+          <!-- Prix -->
+          <div class="mt-5 border-t border-gray-100 pt-3">
+            <span class="text-[10px] uppercase tracking-wider text-gray-400 block">Prix spécial</span>
+            <div class="flex items-baseline gap-2">
+              <span id="detailPrice" class="text-2xl font-black text-gray-950 font-luxury">0 DA</span>
+              <span id="detailOldPrice" class="text-xs text-gray-400 line-through"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutons d'achat rapide -->
+        <div class="mt-6 space-y-2">
+          <button id="detailAddBtn" class="w-full bg-[#111] hover:bg-[#c5a059] text-white hover:text-black text-xs font-bold py-3 uppercase tracking-widest transition flex items-center justify-center gap-2 rounded shadow">
+            <i class="fa-solid fa-cart-plus"></i> Ajouter au panier
+          </button>
+          <button id="detailExpressBtn" class="w-full bg-[#c5a059] hover:bg-[#b08d47] text-gray-950 text-xs font-bold py-2.5 uppercase tracking-widest transition flex items-center justify-center gap-2 rounded shadow">
+            <i class="fa-solid fa-bolt"></i> Acheter en 1 Clic
+          </button>
+          <p class="text-[10px] text-gray-400 text-center flex items-center justify-center gap-1 pt-1">
+            <i class="fa-solid fa-truck-fast text-[#c5a059]"></i> Paiement cash lors de la remise en main propre
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tiroir Panier & Formulaire Express -->
+  <div id="cartModal" class="fixed inset-0 bg-black/60 z-50 hidden flex justify-end backdrop-blur-sm modal-backdrop" onclick="handleBackdropClick(event)">
+    <div id="cartDrawer" class="bg-white w-full max-w-lg h-full shadow-2xl flex flex-col justify-between p-5 md:p-6 overflow-y-auto">
+      
+      <div>
+        <!-- En-tête du panier -->
+        <div class="flex items-center justify-between border-b pb-4 mb-4">
+          <h3 class="text-sm md:text-base font-luxury font-bold uppercase tracking-widest text-gray-900 flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-[#c5a059]"></i> Votre Commande
+          </h3>
+          <button onclick="closeCart()" class="text-gray-400 hover:text-gray-950 text-2xl font-bold p-1 leading-none" title="Fermer">&times;</button>
+        </div>
+
+        <!-- Articles du panier -->
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Sélection</h4>
+            <button onclick="clearEntireCart()" id="clearCartBtn" class="hidden text-[10px] text-red-500 hover:underline">Vider le panier</button>
+          </div>
+          
+          <div id="cartItems" class="space-y-3 max-h-48 overflow-y-auto pr-1">
+            <p class="text-xs text-gray-500 italic py-6 text-center">Votre panier est actuellement vide.</p>
+          </div>
+          
+          <div class="flex justify-between items-center font-bold text-sm border-t border-gray-200 pt-3 mt-4">
+            <span class="uppercase tracking-wider text-xs text-gray-700">Total des articles :</span>
+            <span id="cartTotal" class="text-[#c5a059] font-black text-lg">0 DA</span>
+          </div>
+        </div>
+
+        <!-- FORMULAIRE DE COMMANDE DIRECTE -->
+        <div id="checkoutFormSection" class="border-t border-gray-200 pt-4">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-gray-900 mb-3 flex items-center gap-1.5">
+            <i class="fa-solid fa-truck-ramp-box text-[#c5a059]"></i> Coordonnées de livraison
+          </h4>
+          
+          <form id="orderForm" onsubmit="handleOrderSubmit(event)" class="space-y-3 text-xs">
+            <div>
+              <label for="custName" class="block font-semibold text-gray-700 mb-1">Nom et Prénom *</label>
+              <input type="text" id="custName" required placeholder="Ex: Mohamed Benali" class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none">
+            </div>
+
+            <div>
+              <label for="custPhone" class="block font-semibold text-gray-700 mb-1">Numéro de téléphone *</label>
+              <input type="tel" id="custPhone" required placeholder="Ex: 0550 12 34 56 ou +213" class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none">
+              <span id="phoneError" class="hidden text-[10px] text-red-500 mt-1">Numéro algérien invalide (ex: 0550123456 ou +213...).</span>
+            </div>
+
+            <div>
+              <label for="custWilaya" class="block font-semibold text-gray-700 mb-1">Wilaya de livraison *</label>
+              <select id="custWilaya" required class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none bg-white">
+                <option value="">Sélectionnez votre Wilaya</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="custAddress" class="block font-semibold text-gray-700 mb-1">Commune / Adresse exacte *</label>
+              <textarea id="custAddress" required rows="2" placeholder="Commune, quartier, numéro ou point de repère..." class="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] outline-none resize-none"></textarea>
+            </div>
+
+            <div class="bg-amber-50/90 border border-amber-200 rounded p-2.5 text-[11px] text-amber-900 flex items-center gap-2">
+              <i class="fa-solid fa-hand-holding-dollar text-[#c5a059] text-base flex-shrink-0"></i>
+              <span>Paiement 100% en espèces à la livraison après inspection de votre appareil.</span>
+            </div>
+
+            <button type="submit" id="submitOrderBtn" class="w-full bg-[#111] hover:bg-[#c5a059] text-white hover:text-black font-bold py-3.5 px-4 text-xs uppercase tracking-widest shadow transition-all duration-200 flex items-center justify-center gap-2 mt-2">
+              <i class="fa-solid fa-check-circle text-sm"></i> Confirmer ma commande
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Bouton continuer -->
+      <div class="border-t border-gray-100 pt-3 mt-4">
+        <button onclick="closeCart()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 text-xs uppercase tracking-wider font-semibold transition rounded">
+          Continuer mes achats
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal Élégant Succès Commande -->
+  <div id="successModal" class="fixed inset-0 bg-black/75 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm modal-backdrop">
+    <div class="bg-white max-w-md w-full p-6 text-center shadow-2xl relative border-t-4 border-[#c5a059] rounded-b">
+      <div class="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3 class="text-lg font-luxury font-bold text-gray-900 uppercase tracking-wide mb-2">Commande Enregistrée !</h3>
+      <p class="text-xs text-gray-600 mb-4 leading-relaxed" id="successModalText">
+        Merci pour votre confiance. Notre équipe vous appellera sous peu pour confirmer l'expédition.
+      </p>
+      
+      <div id="whatsappLinkWrapper" class="mb-4 hidden">
+        <a id="whatsappBtn" href="#" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 text-xs uppercase tracking-wider shadow rounded transition">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Confirmer sur WhatsApp
+        </a>
+      </div>
+
+      <button onclick="closeSuccessModal()" class="w-full bg-gray-950 text-[#c5a059] py-2.5 text-xs font-bold uppercase tracking-wider hover:bg-black transition rounded">
+        Fermer la fenêtre
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-[#111] text-gray-400 border-t border-[#222] text-xs py-12 mt-16">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+      <div>
+        <span class="block text-xl font-black tracking-[0.2em] font-luxury text-white mb-2">
+          MA<span class="text-[#c5a059]">CUISINE</span>
+        </span>
+        <p class="text-gray-400 text-xs leading-relaxed max-w-sm">
+          Votre référence en Algérie pour les mixeurs puissants, fers à repasser céramique, bouilloires inox et robots culinaires durables.
+        </p>
+      </div>
+
+      <div>
+        <h5 class="text-white uppercase font-bold tracking-wider mb-3 text-xs">Garantie &amp; Livraison</h5>
+        <ul class="space-y-1.5 text-gray-400">
+          <li>• Livraison rapide à domicile (58 Wilayas)</li>
+          <li>• Contrôle du colis avant paiement</li>
+          <li>• SAV et pièces disponibles</li>
+          <li>• Moteurs protégés contre la surchauffe</li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white uppercase font-bold tracking-wider mb-3 text-xs">Service Commercial</h5>
+        <p class="text-gray-400 mb-2">Besoin d'un conseil ou d'une commande directe par téléphone ?</p>
+        <a href="https://wa.me/213778756084" target="_blank" class="inline-flex items-center gap-2 text-[#c5a059] hover:text-white font-bold transition">
+          <i class="fa-brands fa-whatsapp text-lg"></i> +213 778 75 60 84
+        </a>
+      </div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-gray-800 text-center text-[11px] text-gray-500">
+      &copy; 2026 MaCuisine Algérie. Tous droits réservés.
+    </div>
+  </footer>
+
+  <!-- Code JavaScript -->
+  <script>
+    // Configuration : contact WhatsApp commercial
+    const MON_WHATSAPP = "213778756084";
+
+    // Catalogue des produits avec le dossier sans espaces final-pic/
+    const products = [
+      {
+        id: 1,
+        ref: "BT403",
+        category: "bouilloire",
+        name: "Bouilloire Inox 1.7L (BT403)",
+        feature: "Capacité 1.7L • Base rotative 360° • Corps tout Inox (SS) • Arrêt automatique & Sécurité anti-chauffe à sec",
+        power: "2200 WATTS",
+        price: 5200,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT403.jpg",
+          "datasheet/BT403.jpg"
+        ]
+      },
+      {
+        id: 2,
+        ref: "BT418",
+        category: "batteur",
+        name: "Batteur à Main 5 Vitesses & Pied Mixeur Inox (BT418)",
+        feature: "5 Vitesses avec fonction Turbo • 2 Fouets chromés & 2 Crochets pétrisseurs • Bouton d'éjection individuel • Pied plongeant Inox",
+        power: "300 WATTS",
+        price: 5900,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT418.jpg",
+          "datasheet/BT418.jpg"
+        ]
+      },
+      {
+        id: 3,
+        ref: "BT986O-BT986R-BT986W",
+        category: "plongeant",
+        name: "Bras Mixeur Plongeant avec Verre Doseur & Support (BT986)",
+        feature: "Pied mixeur détachable • Lames en acier inoxydable • Livré avec verre doseur gradué & support mural • Corps ergonomique",
+        power: "170 WATTS",
+        price: 4200,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT986O-BT986R-BT986W.jpg",
+          "datasheet/BT986O-BT986R-BT986W.jpg"
+        ]
+      },
+      {
+        id: 4,
+        ref: "BT989",
+        category: "plongeant",
+        name: "Pack 1 : Mixeur Plongeant & Hachoir Multifonction (BT989)",
+        feature: "Moteur 300W • 2 Vitesses • Accessoires inclus : Hachoir (Chopper), Fouet émulsionneur, Verre doseur gradué & Support mural",
+        power: "300 WATTS",
+        price: 6900,
+        oldPrice: 7500,
+        badge: "Offre Exclusive",
+        images: [
+          "final-pic/BT989.jpg",
+          "datasheet/BT989.jpg"
+        ]
+      },
+      {
+        id: 5,
+        ref: "BT1901",
+        category: "plongeant",
+        name: "Bras Mixeur Inox Soft Grip 700ml (BT1901)",
+        feature: "2 Vitesses • Verre gradué 700ml • Poignée Soft Grip anti-dérapante • Pied inox anti-éclaboussures détachable",
+        power: "400 WATTS",
+        price: 5200,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT1901.jpg",
+          "datasheet/BT1901.jpg"
+        ]
+      },
+      {
+        id: 6,
+        ref: "BT3008R-BT3008G-BT3008B",
+        category: "repassage",
+        name: "Fer à Repasser Vapeur Céramique (BT3008)",
+        feature: "Semelle céramique • Réservoir transparent 350ml • Vapeur continue 25-35g/min & Spray puissant • Système Anti-goutte & Auto-nettoyage",
+        power: "2800 WATTS",
+        price: 8000,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT3008R-BT3008G-BT3008B.jpg",
+          "datasheet/BT3008R-BT3008G-BT3008B.jpg"
+        ]
+      },
+      {
+        id: 7,
+        ref: "BT3009R-BT3009G-BT3009B",
+        category: "repassage",
+        name: "Fer à Repasser Vapeur & Repassage à Sec (BT3009)",
+        feature: "Semelle céramique • Réservoir transparent 320ml • Vapeur continue 25-35g/min • Fonction fer à sec • Protection anti-surchauffe",
+        power: "2400 WATTS",
+        price: 9000,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT3009R-BT3009G-BT3009B.jpg",
+          "datasheet/BT3009R-BT3009G-BT3009B.jpg"
+        ]
+      },
+      {
+        id: 8,
+        ref: "BT3700",
+        category: "jus",
+        name: "Centrifugeuse & Presse-Fruits Entiers (BT3700)",
+        feature: "Moteur AC haute performance 800W • Goulotte large pour fruits entiers • Pichet à jus 1.0L & Bac à pulpe 1.3L • Filtre et lames inox",
+        power: "800 WATTS",
+        price: 18000,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT3700.jpg",
+          "datasheet/BT3700.jpg"
+        ]
+      },
+      {
+        id: 9,
+        ref: "BT5029-1",
+        category: "plongeant",
+        name: "Pack 2 : Mixeur Plongeant 1000W & Robot Multifonction (BT5029-1)",
+        feature: "Moteur puissant 1000W • Finitions Inox • Bol hachoir / robot culinaire, Verre doseur 700ml, Fouet émulsionneur & Support mural",
+        power: "1000 WATTS",
+        price: 7100,
+        oldPrice: 7900,
+        badge: "Offre Exclusive",
+        images: [
+          "final-pic/BT5029-1.jpg",
+          "datasheet/BT5029-1.jpg"
+        ]
+      },
+      {
+        id: 10,
+        ref: "BT6063",
+        category: "plongeant",
+        name: "Bras Mixeur Ergonomique 250W (BT6063)",
+        feature: "Moteur DC silencieux et endurant • 2 Vitesses • Pied mixeur détachable • Lames inox haute résistance • Corps ergonomique",
+        power: "250 WATTS",
+        price: 4500,
+        oldPrice: null,
+        badge: "Nouveau",
+        images: [
+          "final-pic/BT6063.jpg",
+          "datasheet/BT6063.jpg"
+        ]
+      }
+    ];
+
+    // État de l'application
+    let cart = [];
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    // Liste des 58 Wilayas d'Algérie + Nouvelles Circonscriptions
+    const wilayas = [
+      "01 - Adrar", "02 - Chlef", "03 - Laghouat", "04 - Oum El Bouaghi", "05 - Batna", 
+      "06 - Béjaïa", "07 - Biskra", "08 - Béchar", "09 - Blida", "10 - Bouira", 
+      "11 - Tamanrasset", "12 - Tébessa", "13 - Tlemcen", "14 - Tiaret", "15 - Tizi Ouzou", 
+      "16 - Alger", "17 - Djelfa", "18 - Jijel", "19 - Sétif", "20 - Saïda", 
+      "21 - Skikda", "22 - Sidi Bel Abbès", "23 - Annaba", "24 - Guelma", "25 - Constantine", 
+      "26 - Médéa", "27 - Mostaganem", "28 - M'Sila", "29 - Mascara", "30 - Ouargla", 
+      "31 - Oran", "32 - El Bayadh", "33 - Illizi", "34 - Bordj Bou Arreridj", "35 - Boumerdès", 
+      "36 - El Tarf", "37 - Tindouf", "38 - Tissemsilt", "39 - El Oued", "40 - Khenchela", 
+      "41 - Souk Ahras", "42 - Tipaza", "43 - Mila", "44 - Aïn Defla", "45 - Naâma", 
+      "46 - Aïn Témouchent", "47 - Ghardaïa", "48 - Relizane", "49 - Timimoun", "50 - Bordj Badji Mokhtar", 
+      "51 - Ouled Djellal", "52 - Béni Abbès", "53 - In Salah", "54 - In Guezzam", "55 - Touggourt", 
+      "56 - Djanet", "57 - El M'Ghair", "58 - El Meniaa",
+      "59 - Aflou", "60 - Barika", "61 - El Kantara", "62 - Bir El Ater", "63 - El Aricha",
+      "64 - Ksar Chellala", "65 - Aïn Oussara", "66 - Messaad", "67 - Ksar El Boukhari",
+      "68 - Bou Saâda", "69 - El Abiodh Sidi Cheikh"
+    ];
+
+    function populateWilayas() {
+      const select = document.getElementById('custWilaya');
+      wilayas.forEach(w => {
+        const opt = document.createElement('option');
+        opt.value = w;
+        opt.innerText = w;
+        select.appendChild(opt);
+      });
+    }
+
+    // Gestion du rendu des cartes produits
+    function renderProducts(items) {
+      const container = document.getElementById('productGrid');
+      const countEl = document.getElementById('resultCount');
+      countEl.innerText = `${items.length} appareil(s)`;
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-white border border-gray-200 p-8 rounded">
+            <i class="fa-solid fa-magnifying-glass text-3xl text-gray-300 mb-3 block"></i>
+            <p class="text-sm font-semibold text-gray-700">Aucun produit ne correspond à vos critères.</p>
+            <button onclick="resetFilters()" class="mt-4 text-xs font-bold uppercase tracking-wider text-[#c5a059] hover:underline">
+              Réinitialiser les filtres
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map(p => {
+        const mainImg = p.images && p.images.length > 0 ? p.images[0] : 'https://placehold.co/600x600/f8f8f8/333333?text=Photo+Produit';
+        const photosCount = p.images ? p.images.length : 1;
+
+        return `
+          <div class="bg-white border border-gray-200 group flex flex-col justify-between p-3 sm:p-4 hover:shadow-xl hover:border-gray-300 transition duration-300 rounded">
+            <div class="relative">
+              <!-- Badges -->
+              <div class="absolute top-2 left-2 flex flex-col gap-1 z-10 pointer-events-none">
+                ${p.badge ? `<span class="bg-[#111] text-[#c5a059] border border-[#c5a059]/40 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 shadow-sm rounded-sm">${p.badge}</span>` : ''}
+                <span class="bg-white/90 backdrop-blur-sm text-gray-800 border border-gray-200 text-[9px] font-semibold px-2 py-0.5 shadow-sm rounded-sm">${p.power}</span>
+              </div>
+
+              <!-- Badge photos réelles -->
+              <div class="absolute top-2 right-2 z-10">
+                <button onclick="openProductDetail(${p.id})" class="cursor-pointer bg-black/60 hover:bg-black text-white text-[9px] px-2 py-0.5 rounded-full flex items-center gap-1 backdrop-blur-sm transition" title="Voir les ${photosCount} photos">
+                  <i class="fa-solid fa-camera text-[#c5a059]"></i> ${photosCount}
+                </button>
+              </div>
+
+              <!-- Image Cliquable pour Ouvrir la Galerie -->
+              <div onclick="openProductDetail(${p.id})" class="h-44 sm:h-60 w-full bg-gray-50 overflow-hidden flex items-center justify-center mb-3 cursor-pointer relative group/img rounded border border-gray-100">
+                <img src="${mainImg}" alt="${p.name}" loading="lazy" onerror="this.src='https://placehold.co/600x600/f8f8f8/333333?text=${encodeURIComponent(p.ref)}'" class="h-full w-full object-cover group-hover/img:scale-105 transition-transform duration-500">
+                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 transition flex items-center justify-center">
+                  <span class="bg-white/95 text-gray-900 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded shadow flex items-center gap-1.5">
+                    <i class="fa-solid fa-magnifying-glass-plus text-[#c5a059]"></i> Voir les photos
+                  </span>
+                </div>
+              </div>
+
+              <!-- Titre et description -->
+              <h3 onclick="openProductDetail(${p.id})" class="font-luxury font-bold text-xs sm:text-sm tracking-wider text-gray-900 hover:text-[#c5a059] transition uppercase line-clamp-1 cursor-pointer" title="${p.name}">
+                ${p.name}
+              </h3>
+              <p class="text-[11px] text-gray-500 mt-1 line-clamp-2">${p.feature}</p>
+              
+              <!-- Prix -->
+              <div class="mt-2.5 flex items-baseline gap-2">
+                <span class="text-sm sm:text-base font-black text-gray-950">${p.price.toLocaleString('fr-FR')} DA</span>
+                ${p.oldPrice ? `<span class="text-xs text-gray-400 line-through">${p.oldPrice.toLocaleString('fr-FR')} DA</span>` : ''}
+              </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="mt-3.5 space-y-1.5">
+              <button onclick="addToCart(${p.id})" class="w-full bg-[#111] hover:bg-[#c5a059] text-white hover:text-black text-[10px] sm:text-xs font-bold py-2.5 uppercase tracking-widest transition duration-200 flex items-center justify-center gap-1.5 active:scale-95 shadow-sm rounded">
+                <i class="fa-solid fa-cart-plus text-xs"></i> Ajouter au panier
+              </button>
+              <button onclick="expressBuy(${p.id})" class="w-full border border-gray-300 hover:border-black text-gray-800 hover:text-black text-[10px] sm:text-xs font-semibold py-1.5 uppercase tracking-wider transition rounded bg-white">
+                Commander vite
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Modal Détail Produit
+    function openProductDetail(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+
+      const modal = document.getElementById('productDetailModal');
+      const mainImg = document.getElementById('detailMainImg');
+      const thumbnailsBox = document.getElementById('detailThumbnails');
+
+      document.getElementById('detailCategory').innerText = p.category.toUpperCase();
+      document.getElementById('detailName').innerText = p.name;
+      document.getElementById('detailFeature').innerText = p.feature;
+      document.getElementById('detailPower').innerText = p.power;
+      document.getElementById('detailPrice').innerText = `${p.price.toLocaleString('fr-FR')} DA`;
+      
+      const oldPriceEl = document.getElementById('detailOldPrice');
+      if (p.oldPrice) {
+        oldPriceEl.innerText = `${p.oldPrice.toLocaleString('fr-FR')} DA`;
+        oldPriceEl.classList.remove('hidden');
+      } else {
+        oldPriceEl.classList.add('hidden');
+      }
+
+      // Action boutons
+      const addBtn = document.getElementById('detailAddBtn');
+      addBtn.onclick = () => {
+        addToCart(p.id, true);
+        closeProductDetail();
+      };
+
+      const expressBtn = document.getElementById('detailExpressBtn');
+      if (expressBtn) {
+        expressBtn.onclick = () => {
+          closeProductDetail();
+          expressBuy(p.id);
+        };
+      }
+
+      // Configuration des images réelles avec fallback
+      const imagesList = p.images && p.images.length > 0 ? p.images : [`https://placehold.co/600x600/f8f8f8/333333?text=${encodeURIComponent(p.ref)}`];
+      mainImg.src = imagesList[0];
+      mainImg.onerror = () => {
+        mainImg.src = `https://placehold.co/600x600/f8f8f8/333333?text=${encodeURIComponent(p.ref)}`;
+      };
+
+      // Vignettes
+      thumbnailsBox.innerHTML = imagesList.map((imgSrc, idx) => `
+        <button onclick="changeDetailPhoto('${imgSrc}', this, '${encodeURIComponent(p.ref)}')" class="detail-thumb border-2 ${idx === 0 ? 'border-[#c5a059]' : 'border-gray-200'} hover:border-[#c5a059] w-12 h-12 rounded overflow-hidden flex-shrink-0 transition">
+          <img src="${imgSrc}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/f8f8f8/333333?text=Photo'">
+        </button>
+      `).join('');
+
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function changeDetailPhoto(src, btnElement, refFallback) {
+      const mainImg = document.getElementById('detailMainImg');
+      mainImg.style.opacity = '0.2';
+      setTimeout(() => {
+        mainImg.src = src;
+        mainImg.onerror = () => {
+          mainImg.src = `https://placehold.co/600x600/f8f8f8/333333?text=${refFallback || 'Photo'}`;
+        };
+        mainImg.style.opacity = '1';
+      }, 150);
+
+      document.querySelectorAll('.detail-thumb').forEach(btn => {
+        btn.classList.remove('border-[#c5a059]');
+        btn.classList.add('border-gray-200');
+      });
+      btnElement.classList.remove('border-gray-200');
+      btnElement.classList.add('border-[#c5a059]');
+    }
+
+    function closeProductDetail() {
+      document.getElementById('productDetailModal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function handleDetailBackdropClick(e) {
+      if (e.target.id === 'productDetailModal') {
+        closeProductDetail();
+      }
+    }
+
+    // Achat direct en 1 clic
+    function expressBuy(id) {
+      const product = products.find(x => x.id === id);
+      if (!product) return;
+      
+      const existing = cart.find(x => x.id === id);
+      if (!existing) {
+        cart.push({ id: product.id, product: product, qty: 1 });
+      }
+      updateCartUI();
+      openCart();
+      setTimeout(() => {
+        document.getElementById('custName')?.focus();
+      }, 300);
+    }
+
+    // Gestion du panier
+    function addToCart(id, autoOpen = false) {
+      const product = products.find(x => x.id === id);
+      if (!product) return;
+
+      const existingItem = cart.find(item => item.product.id === id);
+      if (existingItem) {
+        existingItem.qty += 1;
+      } else {
+        cart.push({ id: product.id, product: product, qty: 1 });
+      }
+
+      updateCartUI();
+      showToast(`${product.name} ajouté au panier !`);
+
+      if (autoOpen) {
+        openCart();
+      }
+    }
+
+    function changeQuantity(id, delta) {
+      const item = cart.find(x => x.id === id);
+      if (!item) return;
+
+      item.qty += delta;
+      if (item.qty <= 0) {
+        removeFromCart(id);
+        return;
+      }
+      updateCartUI();
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      updateCartUI();
+    }
+
+    function clearEntireCart() {
+      cart = [];
+      updateCartUI();
+      showToast("Votre panier a été vidé.");
+    }
+
+    function updateCartUI() {
+      const countEl = document.getElementById('cartCount');
+      const container = document.getElementById('cartItems');
+      const totalEl = document.getElementById('cartTotal');
+      const clearBtn = document.getElementById('clearCartBtn');
+
+      const totalItemsCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      countEl.innerText = totalItemsCount;
+
+      countEl.classList.add('badge-pop');
+      setTimeout(() => countEl.classList.remove('badge-pop'), 250);
+
+      if (cart.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-500 italic py-6 text-center">Votre panier est actuellement vide.</p>`;
+        totalEl.innerText = "0 DA";
+        clearBtn.classList.add('hidden');
+        return;
+      }
+
+      clearBtn.classList.remove('hidden');
+
+      let total = 0;
+      container.innerHTML = cart.map(item => {
+        const itemSubtotal = item.product.price * item.qty;
+        total += itemSubtotal;
+
+        return `
+          <div class="flex items-center justify-between text-xs border-b border-gray-100 pb-2.5 gap-2">
+            <div class="flex-1 min-w-0">
+              <p class="font-bold font-luxury tracking-wide text-gray-900 uppercase truncate">${item.product.name}</p>
+              <p class="text-[10px] text-gray-500">${item.product.power} • ${item.product.price.toLocaleString('fr-FR')} DA</p>
+              <p class="text-xs font-black text-[#c5a059] mt-0.5">${itemSubtotal.toLocaleString('fr-FR')} DA</p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <div class="flex items-center border border-gray-300 rounded overflow-hidden">
+                <button onclick="changeQuantity(${item.id}, -1)" class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition">-</button>
+                <span class="px-2 py-0.5 font-semibold text-gray-800 text-[11px] min-w-[20px] text-center">${item.qty}</span>
+                <button onclick="changeQuantity(${item.id}, 1)" class="px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition">+</button>
+              </div>
+
+              <button onclick="removeFromCart(${item.id})" title="Supprimer" class="text-gray-400 hover:text-red-600 p-1 transition">
+                <i class="fa-solid fa-trash-can text-xs"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      totalEl.innerText = `${total.toLocaleString('fr-FR')} DA`;
+    }
+
+    function openCart() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeCart() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === 'cartModal') {
+        closeCart();
+      }
+    }
+
+    // Filtres & Recherche
+    function filterCategory(cat) {
+      activeFilter = cat;
+
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.className = "cat-btn text-[#c5a059] border-b-2 border-[#c5a059] pb-1 transition-all";
+        } else {
+          btn.className = "cat-btn text-gray-600 hover:text-[#c5a059] border-b-2 border-transparent hover:border-[#c5a059] pb-1 transition-all";
+        }
+      });
+
+      applyFilters();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      
+      const inputDesk = document.getElementById('searchInputDesktop');
+      const inputMob = document.getElementById('searchInputMobile');
+      const clearBtnDesk = document.getElementById('clearSearchBtnDesktop');
+
+      if (inputDesk.value !== val) inputDesk.value = val;
+      if (inputMob.value !== val) inputMob.value = val;
+
+      if (searchQuery.length > 0) {
+        clearBtnDesk?.classList.remove('hidden');
+      } else {
+        clearBtnDesk?.classList.add('hidden');
+      }
+
+      applyFilters();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInputDesktop').value = '';
+      document.getElementById('searchInputMobile').value = '';
+      searchQuery = '';
+      document.getElementById('clearSearchBtnDesktop')?.classList.add('hidden');
+      applyFilters();
+    }
+
+    function toggleMobileSearch() {
+      const wrapper = document.getElementById('mobileSearchWrapper');
+      wrapper.classList.toggle('hidden');
+      if (!wrapper.classList.contains('hidden')) {
+        document.getElementById('searchInputMobile').focus();
+      }
+    }
+
+    function resetFilters() {
+      searchQuery = '';
+      clearSearch();
+      filterCategory('all');
+    }
+
+    function applyFilters() {
+      let filtered = products;
+
+      if (activeFilter !== 'all') {
+        filtered = filtered.filter(p => p.category === activeFilter);
+      }
+
+      if (searchQuery !== '') {
+        filtered = filtered.filter(p => 
+          p.name.toLowerCase().includes(searchQuery) || 
+          p.feature.toLowerCase().includes(searchQuery) ||
+          p.power.toLowerCase().includes(searchQuery) ||
+          p.ref.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      renderProducts(filtered);
+    }
+
+    // Validation étendue du numéro algérien (05/06/07, +213, 00213)
+    function validateAlgerianPhone(phone) {
+      let cleaned = phone.replace(/[\s\-\.\(\)]/g, '');
+      if (cleaned.startsWith('+213')) {
+        cleaned = '0' + cleaned.slice(4);
+      } else if (cleaned.startsWith('00213')) {
+        cleaned = '0' + cleaned.slice(5);
+      } else if (cleaned.startsWith('213')) {
+        cleaned = '0' + cleaned.slice(3);
+      }
+      const regex = /^0(5|6|7)[0-9]{8}$/;
+      return {
+        isValid: regex.test(cleaned),
+        formatted: cleaned
+      };
+    }
+
+    // Validation et envoi du formulaire de commande
+    function handleOrderSubmit(e) {
+      e.preventDefault();
+
+      if (cart.length === 0) {
+        showToast("Votre panier est vide ! Veuillez sélectionner un article.");
+        return;
+      }
+
+      const name = document.getElementById('custName').value.trim();
+      const rawPhone = document.getElementById('custPhone').value.trim();
+      const wilaya = document.getElementById('custWilaya').value;
+      const address = document.getElementById('custAddress').value.trim();
+      const phoneError = document.getElementById('phoneError');
+
+      const phoneValidation = validateAlgerianPhone(rawPhone);
+      if (!phoneValidation.isValid) {
+        phoneError.classList.remove('hidden');
+        document.getElementById('custPhone').focus();
+        return;
+      } else {
+        phoneError.classList.add('hidden');
+      }
+
+      const verifiedPhone = phoneValidation.formatted;
+
+      // Détails du panier
+      let total = 0;
+      let orderListWhatsApp = "";
+      cart.forEach((item, index) => {
+        const itemSubtotal = item.product.price * item.qty;
+        total += itemSubtotal;
+        orderListWhatsApp += `${index + 1}. ${item.product.name} (x${item.qty}) - ${itemSubtotal.toLocaleString('fr-FR')} DA\n`;
+      });
+
+      // Construction du message WhatsApp
+      let message = `🛒 *NOUVELLE COMMANDE - MACUISINE*\n\n`;
+      message += `👤 *Client :* ${name}\n`;
+      message += `📞 *Téléphone :* ${verifiedPhone}\n`;
+      message += `📍 *Wilaya :* ${wilaya}\n`;
+      message += `🏠 *Adresse :* ${address}\n\n`;
+      message += `📦 *Articles commandés :*\n${orderListWhatsApp}\n`;
+      message += `💵 *Total à régler : ${total.toLocaleString('fr-FR')} DA*\n`;
+      message += `🚚 *Mode :* Paiement Cash à la livraison`;
+
+      const encoded = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/${MON_WHATSAPP}?text=${encoded}`;
+
+      // Configuration du modal de confirmation
+      document.getElementById('successModalText').innerHTML = `
+        Merci <strong>${name}</strong> ! Votre commande pour <strong>${wilaya}</strong> a bien été enregistrée.<br>
+        Notre équipe vous appellera sous peu au <strong>${verifiedPhone}</strong> pour confirmation.
+      `;
+
+      if (MON_WHATSAPP) {
+        const waBtn = document.getElementById('whatsappBtn');
+        waBtn.href = whatsappUrl;
+        document.getElementById('whatsappLinkWrapper').classList.remove('hidden');
+      }
+
+      // Nettoyage
+      cart = [];
+      updateCartUI();
+      closeCart();
+      document.getElementById('orderForm').reset();
+      openSuccessModal();
+    }
+
+    function openSuccessModal() {
+      document.getElementById('successModal').classList.remove('hidden');
+    }
+    function closeSuccessModal() {
+      document.getElementById('successModal').classList.add('hidden');
+    }
+
+    // Gestion du toast flottant
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      
+      toastMessage.innerText = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // Fermeture avec la touche Échap
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeCart();
+        closeProductDetail();
+        closeSuccessModal();
+      }
+    });
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      populateWilayas();
+      renderProducts(products);
+      updateCartUI();
+    });
+  </script>
+</body>
+</html>
